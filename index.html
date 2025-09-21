@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title id="page-title">Earth Atlas Collection</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- 主页 -->
+    <div class="main-container">
+        <!-- 左侧面板 -->
+        <aside class="left-panel">
+            <!-- 应用标题 -->
+            <header class="app-header">
+                <h1 class="app-title" id="app-title">Earth Atlas Collection</h1>
+            </header>
+
+            <!-- 语言切换器 -->
+            <div class="language-switcher">
+                <button class="language-btn active" data-lang="en">EN</button>
+                <button class="language-btn" data-lang="zh">中</button>
+                <button class="language-btn" data-lang="ja">日</button>
+            </div>
+            
+            <!-- User Avatar -->
+            <div class="large-avatar">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User Avatar" id="avatar-alt">
+            </div>
+
+            <!-- Camera Section -->
+            <section class="camera-section">
+                <button class="camera-button" id="uploadBtn">
+                    <img src="camera-icon.svg" class="camera-icon" alt="Camera Icon">
+                </button>
+                <p class="camera-text" id="camera-text">Take Photo / Upload</p>
+                <input type="file" id="fileInput" accept="image/*" style="display: none;">
+            </section>
+
+            <!-- Statistics -->
+            <div class="stats-info">
+                <div class="stat-item">
+                    <span class="stat-number" id="totalCount">20</span>
+                    <span class="stat-label" id="totalCountLabel">Total Atlas</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Right Content Area -->
+        <main class="right-panel">
+            <!-- Gallery Grid -->
+            <div class="gallery-container">
+                <div class="gallery-grid" id="galleryGrid">
+                    <!-- Image cards will be generated dynamically by JavaScript -->
+                </div>
+
+                <!-- Load More Indicator -->
+                <div class="loading-more" id="loadingMore" style="display: none;">
+                    <div class="spinner"></div>
+                    <span id="loading-text">Loading...</span>
+                </div>
+            </div>
+        </main>
+
+        <!-- 返回顶部按钮 -->
+        <button class="back-to-top-btn" id="backToTopBtn" title="Back to top">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Loading Animation Modal -->
+    <div class="loading-modal" id="loadingModal" style="display: none;">
+        <div class="loading-content">
+            <div class="ai-icons">
+                <div class="icon-row">
+                    <span class="icon">⬡</span>
+                    <span class="icon">◈</span>
+                    <span class="icon">▲</span>
+                    <span class="icon">◉</span>
+                </div>
+                <div class="icon-row">
+                    <span class="icon">◎</span>
+                    <span class="icon">✦</span>
+                    <span class="icon">◆</span>
+                    <span class="icon">○</span>
+                </div>
+                <div class="icon-row">
+                    <span class="icon">✕</span>
+                    <span class="icon">◊</span>
+                    <span class="icon">△</span>
+                    <span class="icon">◈</span>
+                </div>
+                <div class="icon-row">
+                    <span class="icon">◐</span>
+                    <span class="icon">◑</span>
+                    <span class="icon">◒</span>
+                    <span class="icon">◓</span>
+                </div>
+            </div>
+            <p class="loading-text" id="ai-loading-text">AI is generating atlas...</p>
+        </div>
+    </div>
+
+    <!-- Image Viewer Modal -->
+    <div class="image-viewer" id="imageViewer" style="display: none;">
+        <div class="viewer-overlay"></div>
+        <div class="viewer-content">
+            <!-- Close Button -->
+            <button class="viewer-close" id="viewerClose">×</button>
+            
+            <!-- Main Image Area -->
+            <div class="viewer-main">
+                <img id="viewerImage" src="" alt="Atlas Details">
+                <div class="viewer-info">
+                    <h3 id="viewerTitle">Calotes versicolor</h3>
+                    <p id="viewerDesc">变色树蜥</p>
+                </div>
+            </div>
+
+            <!-- Toolbar -->
+            <div class="viewer-toolbar">
+                <button class="toolbar-btn" id="shareBtn">
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                        <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z" fill="currentColor"/>
+                    </svg>
+                    <span id="share-text">Share</span>
+                </button>
+                <button class="toolbar-btn" id="downloadBtn">
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                        <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" fill="currentColor"/>
+                    </svg>
+                    <span id="download-text">Download</span>
+                </button>
+                <button class="toolbar-btn danger" id="deleteBtn">
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" fill="currentColor"/>
+                    </svg>
+                    <span id="delete-text">Delete</span>
+                </button>
+            </div>
+
+            <!-- Thumbnail Navigation -->
+            <div class="viewer-thumbnails" id="viewerThumbnails">
+                <!-- Thumbnails will be generated dynamically by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+
+    <!-- 确认删除弹窗 -->
+    <div class="confirm-modal" id="confirmModal" style="display: none;">
+        <div class="viewer-overlay"></div>
+        <div class="confirm-content">
+            <h3 id="confirm-title">Confirm Deletion</h3>
+            <p id="confirm-message">Are you sure you want to delete this item? This action cannot be undone.</p>
+            <div class="confirm-actions">
+                <button class="confirm-btn cancel" id="confirmCancelBtn">Cancel</button>
+                <button class="confirm-btn confirm" id="confirmOkBtn">Delete</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

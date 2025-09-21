@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生成测试图片</title>
+</head>
+<body>
+    <canvas id="canvas" width="800" height="600"></canvas>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // 背景
+        ctx.fillStyle = '#f5f1db';
+        ctx.fillRect(0, 0, 800, 600);
+
+        // 绘制蜥蜴轮廓（简化版）
+        ctx.strokeStyle = '#8B7355';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        
+        // 身体
+        ctx.moveTo(200, 300);
+        ctx.quadraticCurveTo(400, 250, 550, 300);
+        ctx.quadraticCurveTo(500, 350, 400, 340);
+        ctx.quadraticCurveTo(250, 350, 200, 300);
+        
+        // 尾巴
+        ctx.moveTo(550, 300);
+        ctx.quadraticCurveTo(650, 320, 700, 350);
+        
+        // 头部
+        ctx.moveTo(200, 300);
+        ctx.quadraticCurveTo(150, 280, 120, 290);
+        
+        // 腿
+        ctx.moveTo(250, 340);
+        ctx.lineTo(230, 380);
+        ctx.moveTo(450, 340);
+        ctx.lineTo(470, 380);
+        
+        ctx.stroke();
+
+        // 填充颜色
+        ctx.fillStyle = '#D2691E';
+        ctx.globalAlpha = 0.6;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+
+        // 添加文字
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 36px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Calotes versicolor', 400, 450);
+        
+        ctx.font = '24px Arial';
+        ctx.fillStyle = '#666';
+        ctx.fillText('变色树蜥', 400, 490);
+
+        // 装饰性几何图形
+        ctx.strokeStyle = '#999';
+        ctx.lineWidth = 1;
+        ctx.globalAlpha = 0.3;
+        
+        // 圆形图案
+        ctx.beginPath();
+        ctx.arc(650, 100, 40, 0, Math.PI * 2);
+        ctx.stroke();
+        
+        ctx.beginPath();
+        ctx.arc(150, 150, 30, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // 线条装饰
+        ctx.beginPath();
+        ctx.moveTo(50, 50);
+        ctx.lineTo(100, 50);
+        ctx.moveTo(75, 25);
+        ctx.lineTo(75, 75);
+        ctx.stroke();
+
+        // 三角形装饰
+        ctx.beginPath();
+        ctx.moveTo(700, 500);
+        ctx.lineTo(720, 530);
+        ctx.lineTo(680, 530);
+        ctx.closePath();
+        ctx.stroke();
+
+        // 转换为base64并输出
+        const dataURL = canvas.toDataURL('image/png');
+        console.log('Base64 Image:', dataURL);
+        
+        // 创建下载链接
+        const link = document.createElement('a');
+        link.download = 'test-lizard.png';
+        link.href = dataURL;
+        link.textContent = '点击下载测试图片';
+        document.body.appendChild(link);
+    </script>
+</body>
+</html>
