@@ -19,7 +19,8 @@ const translations = {
         deleteConfirmTitle: 'Confirm Deletion',
         deleteConfirmMsg: 'Are you sure you want to delete this item? This action cannot be undone.',
         cancel: 'Cancel',
-        deleteSuccess: 'Deletion successful'
+        deleteSuccess: 'Deletion successful',
+        emptyStateText: 'Capture the world around you and create your personal atlas with AI. Tap the Camera button to start your amazing collection!'
     },
     zh: {
         pageTitle: '地球图鉴收集',
@@ -40,7 +41,8 @@ const translations = {
         deleteConfirmTitle: '确认删除',
         deleteConfirmMsg: '您确定要删除这个项目吗？此操作无法撤销。',
         cancel: '取消',
-        deleteSuccess: '删除成功'
+        deleteSuccess: '删除成功',
+        emptyStateText: '拍下身边的万物，用 AI 创造你的专属图鉴。点击拍照按钮，开始你的奇妙收集之旅吧！'
     },
     ja: {
         pageTitle: '地球図鑑コレクション',
@@ -61,7 +63,8 @@ const translations = {
         deleteConfirmTitle: '削除の確認',
         deleteConfirmMsg: 'このアイテムを削除してもよろしいですか？この操作は元に戻せません。',
         cancel: 'キャンセル',
-        deleteSuccess: '削除に成功しました'
+        deleteSuccess: '削除に成功しました',
+        emptyStateText: '身の回りのあらゆるものを撮影し、AIであなただけの図鑑を作りましょう。撮影ボタンをタップして、素敵な収集の旅を始めましょう！'
     }
 };
 
@@ -86,6 +89,18 @@ class EarthAtlasApp {
         this.setupInfiniteScroll();
         this.setupMobileGestures();
         this.setupBackToTopButton();
+    }
+
+    updateEmptyState() {
+        const emptyState = document.getElementById('emptyState');
+        const galleryGrid = document.getElementById('galleryGrid');
+        if (this.galleryData.length === 0) {
+            emptyState.style.display = 'flex';
+            galleryGrid.style.display = 'none';
+        } else {
+            emptyState.style.display = 'none';
+            galleryGrid.style.display = 'grid';
+        }
     }
 
     // 设置语言切换器
@@ -185,6 +200,12 @@ class EarthAtlasApp {
         document.getElementById('confirm-message').textContent = t.deleteConfirmMsg;
         document.getElementById('confirmCancelBtn').textContent = t.cancel;
         document.getElementById('confirmOkBtn').textContent = t.delete;
+
+        // 更新空状态文本
+        const emptyStateTextEl = document.getElementById('emptyStateText');
+        if (emptyStateTextEl) {
+            emptyStateTextEl.textContent = t.emptyStateText;
+        }
     }
 
     setupEventListeners() {
@@ -371,8 +392,9 @@ class EarthAtlasApp {
             grid.appendChild(card);
         });
 
-        // Update stats after rendering
+        // Update stats and empty state after rendering
         this.updateStats();
+        this.updateEmptyState();
     }
 
     updateStats() {
