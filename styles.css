@@ -923,7 +923,8 @@ body {
 }
 
 .empty-state-img {
-    width: 150px;
+    width: 450px; /* 3 times the original 150px */
+    max-width: 90%; /* Ensure it doesn't overflow on small screens */
     height: auto;
     margin-bottom: 20px;
     opacity: 0.7;
